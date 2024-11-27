@@ -37,6 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   usb_serial: ^0.5.2
   embedded_serialport: ^1.5.5
+  flutter_tts: ^4.2.0
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
+  http: ^1.2.2
   
 
 dev_dependencies:
