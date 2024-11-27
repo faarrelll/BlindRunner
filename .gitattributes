@@ -1,3 +1,6 @@
 *.dart linguist-language=Dart
 *.cpp linguist-vendored=true
 *.h linguist-vendored=true
+# Mark CMake files as vendored (not counted for language classification)
+*.cmake linguist-vendored=true
+CMakeLists.txt linguist-vendored=true
