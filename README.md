@@ -14,11 +14,13 @@
   - **Double Tap**: Fetches and announces the nearest sports facility.
   - **Long Press**: Announces the heart rate condition in real-time
 
-![Screenshot_2024-11-30-08-39-50-065_com example tes_serial_com](https://github.com/user-attachments/assets/a47358b7-f5d1-43fc-a273-417b2105c3ca)
+## Preview
 
-![Screenshot_2024-11-30-08-40-02-250_com example tes_serial_com](https://github.com/user-attachments/assets/2750bd5b-f674-4c74-86e8-4f4c4b170189)
+![Screenshot_1](https://github.com/user-attachments/assets/a47358b7-f5d1-43fc-a273-417b2105c3ca)
 
-![Screenshot_2024-11-30-08-40-17-068_com example tes_serial_com](https://github.com/user-attachments/assets/fea518dc-d68f-4fdc-940c-0295356135e0)
+![Screenshot_2](https://github.com/user-attachments/assets/2750bd5b-f674-4c74-86e8-4f4c4b170189)
+
+![Screenshot_3](https://github.com/user-attachments/assets/fea518dc-d68f-4fdc-940c-0295356135e0)
 
 
 
@@ -35,3 +37,6 @@ Ensure you have **Flutter** installed on your development machine. If you haven'
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/yourusername/blind-assistant-app.git
+
+
+Feel free to use !
