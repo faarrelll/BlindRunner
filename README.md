@@ -36,7 +36,6 @@ Ensure you have **Flutter** installed on your development machine. If you haven'
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/blind-assistant-app.git
-
+   git clone https://github.com/faarrelll/blind-assistant-app.git
 
 Feel free to use !
