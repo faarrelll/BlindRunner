@@ -11,8 +11,8 @@ class BlindAssistantApp extends StatelessWidget {
       title: 'Blind Assistant',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.red[100],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
         ),
       ),
       home: const TtsLocationSerialScreen(),

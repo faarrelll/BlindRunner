@@ -11,8 +11,10 @@ class SerialService {
   Transaction<String>? _transaction;
   UsbDevice? _device;
   final _dataController = StreamController<SensorData>.broadcast();
+  final _connectionStatusController = StreamController<bool>.broadcast();
 
   Stream<SensorData> get dataStream => _dataController.stream;
+  Stream<bool> get connectionStatusStream => _connectionStatusController.stream;
 
   Future<void> initializeSerial() async {
     UsbSerial.usbEventStream!.listen((_) => _getPorts());
@@ -23,16 +25,24 @@ class SerialService {
     List<UsbDevice> devices = await UsbSerial.listDevices();
     if (devices.isNotEmpty) {
       _connectTo(devices[0]);
+    } else {
+      _connectionStatusController.add(false);
     }
   }
 
   Future<bool> _connectTo(device) async {
     _disconnect();
 
-    if (device == null) return false;
+    if (device == null) {
+      _connectionStatusController.add(false);
+      return false;
+    }
 
     _port = await device.create();
-    if (await _port!.open() != true) return false;
+    if (await _port!.open() != true) {
+      _connectionStatusController.add(false);
+      return false;
+    }
 
     _device = device;
 
@@ -51,6 +61,9 @@ class SerialService {
     );
 
     _subscription = _transaction!.stream.listen(_processSerialData);
+
+    // Add connection status
+    _connectionStatusController.add(true);
 
     return true;
   }
@@ -71,10 +84,12 @@ class SerialService {
     _port?.close();
     _port = null;
     _device = null;
+    _connectionStatusController.add(false);
   }
 
   void dispose() {
     _dataController.close();
+    _connectionStatusController.close();
     _disconnect();
   }
 }

@@ -23,6 +23,9 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
 
   String displayMessage = "Tap anywhere to get location.";
   bool isSpeaking = false;
+  bool isConnected = false;
+  bool _initialConnectionCheck = true;
+  bool _previousConnectionState = false;
 
   @override
   void initState() {
@@ -38,6 +41,38 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
     _serialService.dataStream.listen((SensorData data) {
       _handleSensorData(data);
     });
+
+    // Listen to connection status
+    _serialService.connectionStatusStream.listen((bool connected) {
+      setState(() {
+        // Prevent initial TTS trigger when app first starts
+        // Only speak if the connection state has actually changed
+        if (!_initialConnectionCheck && connected != _previousConnectionState) {
+          _handleDeviceConnectionSound(connected);
+        }
+        isConnected = connected;
+        _previousConnectionState = connected; // Update previous state
+        _initialConnectionCheck = false;
+      });
+    });
+  }
+
+  Future<void> _handleDeviceConnectionSound(bool connected) async {
+    if (!isSpeaking) {
+      setState(() {
+        isSpeaking = true;
+      });
+
+      if (connected) {
+        await _ttsService.speak("Alat Terhubung");
+      } else {
+        await _ttsService.speak("Alat Terputus");
+      }
+
+      setState(() {
+        isSpeaking = false;
+      });
+    }
   }
 
   void _handleSensorData(SensorData data) {
@@ -135,7 +170,9 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
           altitude: 0,
           heading: 0,
           speed: 0,
-          speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
+          speedAccuracy: 0,
+          altitudeAccuracy: 0,
+          headingAccuracy: 0,
         )
     );
 
@@ -171,6 +208,25 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Blind Assistant'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: isConnected ? Colors.green : Colors.red,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                isConnected ? 'Connected' : 'Disconnected',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: GestureDetector(
         onTap: _getLocationAndSpeak,
