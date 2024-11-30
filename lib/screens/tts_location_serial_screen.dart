@@ -21,7 +21,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
   final TextToSpeechService _ttsService = TextToSpeechService();
   final SerialService _serialService = SerialService();
 
-  String displayMessage = "Tap anywhere to get location.";
+  String displayMessage = "Beri Ketukan Untuk Interaksi.";
   bool isSpeaking = false;
   bool isConnected = false;
   bool _initialConnectionCheck = true;
@@ -76,7 +76,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
   }
 
   void _handleSensorData(SensorData data) {
-    if (data.distance < 3.0 && !isSpeaking) {
+    if (data.distance < 100.0 && !isSpeaking) {
       _speakObstacleWarning(data.distance);
     }
 
@@ -90,11 +90,11 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
   Future<void> _speakObstacleWarning(double distance) async {
     setState(() {
       isSpeaking = true;
-      displayMessage = "Hati-hati! Ada halangan dalam jarak $distance meter.";
+      displayMessage = "Hati-hati! Ada halangan dalam jarak $distance sentimeter.";
     });
 
     await _ttsService.speak(
-        "Hati-hati! Ada halangan dalam jarak $distance meter."
+        "Hati-hati! Ada halangan dalam jarak $distance sentimeter."
     );
 
     setState(() {
