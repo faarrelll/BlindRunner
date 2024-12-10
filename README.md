@@ -1,6 +1,6 @@
-# Blind Assistant App
+# BlindRunner
 
-**Blind Assistant App** is a Flutter application designed to assist blind users by providing vital information using text-to-speech (TTS) and location-based services. The app helps users navigate and provides important alerts based on location and device data.
+**BlindRunner App** is a Flutter application designed to assist blind users by providing vital information using text-to-speech (TTS) and location-based services. The app helps users navigate and provides important alerts based on location and device data.
 
 ## Features
 
