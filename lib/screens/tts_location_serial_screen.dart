@@ -76,9 +76,9 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
   }
 
   void _handleSensorData(SensorData data) {
-    if ((data.distance < 100 && data.heartRate == -1) && !isSpeaking) {
+    if ((data.distance < 200 && data.heartRate == -1) && !isSpeaking) {
       _speakObstacleWarning(data.distance);
-    } else if (data.distance == -1 && data.heartRate > 0){
+    } else if ((data.distance == -1 && data.heartRate > 0) && !isSpeaking){
         _speakHeartRate(data.heartRate);
     }
     // if (!isSpeaking) {
@@ -100,6 +100,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
 
     setState(() {
       isSpeaking = false;
+      displayMessage = "Beri ketukan untuk interaksi.";
     });
   }
 
@@ -109,7 +110,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
       displayMessage = "Mendeteksi Detak Jantung";
     });
 
-    await _ttsService.speak("Beep!");
+    await _ttsService.speak("Beeeeeeeeep!");
 
     setState(() {
       displayMessage = "Letakan jari pada sensor kurang lebih 10 detik!";
@@ -117,7 +118,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
 
     await _ttsService.speak("Letakan jari pada sensor kurang lebih 10 detik!");
 
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 3));
 
     setState(() {
       displayMessage = "Detak jantung saat ini adalah ${heartrate} bpm";
