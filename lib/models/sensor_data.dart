@@ -1,5 +1,5 @@
 class SensorData {
-  final double distance;
+  final int distance;
   final int heartRate;
 
   SensorData({
@@ -9,7 +9,7 @@ class SensorData {
 
   factory SensorData.fromJson(Map<String, dynamic> json) {
     return SensorData(
-      distance: json['distance'] ?? 0.0,
+      distance: json['distance'] ?? 0,
       heartRate: json['heartRate'] ?? 0,
     );
   }

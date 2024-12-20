@@ -137,7 +137,7 @@ class _TtsWithLocationAndSerialState extends State<TtsWithLocationAndSerial> {
   void _processSerialData(String data) async {
     try {
       final parsed = json.decode(data) as Map<String, dynamic>;
-      double distance = parsed['distance'] ?? 0.0;
+      double distance = parsed['distance'] ?? 0;
       int heartRate = parsed['heartRate'] ?? 0;
 
       if (distance < 3.0 && !isSpeaking) {

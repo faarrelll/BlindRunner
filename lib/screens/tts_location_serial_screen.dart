@@ -76,18 +76,19 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
   }
 
   void _handleSensorData(SensorData data) {
-    if (data.distance < 100.0 && !isSpeaking) {
+    if ((data.distance < 100 && data.heartRate == -1) && !isSpeaking) {
       _speakObstacleWarning(data.distance);
+    } else if (data.distance == -1 && data.heartRate > 0){
+        _speakHeartRate(data.heartRate);
     }
-
-    if (!isSpeaking) {
-      setState(() {
-        displayMessage = "Detak jantung saat ini adalah ${data.heartRate} bpm";
-      });
-    }
+    // if (!isSpeaking) {
+    //   setState(() {
+    //     displayMessage = "Detak jantung saat ini adalah ${data.heartRate} bpm";
+    //   });
+    // }
   }
 
-  Future<void> _speakObstacleWarning(double distance) async {
+  Future<void> _speakObstacleWarning(int distance) async {
     setState(() {
       isSpeaking = true;
       displayMessage = "Hati-hati! Ada halangan dalam jarak $distance sentimeter.";
@@ -99,6 +100,36 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
 
     setState(() {
       isSpeaking = false;
+    });
+  }
+
+  Future<void> _speakHeartRate(int heartrate) async {
+    setState(() {
+      isSpeaking = true;
+      displayMessage = "Mendeteksi Detak Jantung";
+    });
+
+    await _ttsService.speak("Beep!");
+
+    setState(() {
+      displayMessage = "Letakan jari pada sensor kurang lebih 10 detik!";
+    });
+
+    await _ttsService.speak("Letakan jari pada sensor kurang lebih 10 detik!");
+
+    await Future.delayed(const Duration(seconds: 5));
+
+    setState(() {
+      displayMessage = "Detak jantung saat ini adalah ${heartrate} bpm";
+    });
+
+    await _ttsService.speak(
+        "Detak jantung saat ini adalah ${heartrate} bpm"
+    );
+
+    setState(() {
+      isSpeaking = false;
+      displayMessage = "Beri Ketukan Untuk Interaksi.";
     });
   }
 
@@ -118,8 +149,10 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
         await _ttsService.speak("Lokasi Anda saat ini adalah $address");
         setState(() {
           isSpeaking = false;
+          displayMessage = "Beri Ketukan Untuk Interaksi.";
         });
       }
+
     } catch (e) {
       setState(() {
         displayMessage = "Error: $e";
@@ -192,6 +225,7 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
       );
       setState(() {
         isSpeaking = false;
+        displayMessage = "Beri Ketukan Untuk Interaksi.";
       });
     }
   }
@@ -231,17 +265,6 @@ class _TtsLocationSerialScreenState extends State<TtsLocationSerialScreen> {
       body: GestureDetector(
         onTap: _getLocationAndSpeak,
         onDoubleTap: _getNearbyField,
-        onLongPress: () async {
-          if (!isSpeaking) {
-            setState(() {
-              isSpeaking = true;
-            });
-            await _ttsService.speak(displayMessage);
-            setState(() {
-              isSpeaking = false;
-            });
-          }
-        },
         child: Container(
           color: Colors.white,
           child: Center(
